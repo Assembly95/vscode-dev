@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>타자연습 웹사이트</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #quote {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        #inputBox {
+            width: 50%;
+            padding: 10px;
+            font-size: 16px;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>타자 연습</h1>
+    <div id="quote">빠르게 그리고 정확하게 입력해보세요!</div>
+    <input type="text" id="inputBox" placeholder="여기에 입력하세요" disabled>
+    <div id="result"></div>
+    <button onclick="startTest()">시작하기</button>
+
+    <script>
+        const sentences = [
+            "안녕하세요, 오늘도 좋은 하루입니다.",
+            "타자 연습을 통해 실력을 키워보세요.",
+            "프로그래밍은 연습이 중요합니다.",
+            "이 문장을 빠르게 입력해보세요."
+        ];
+
+        let startTime;
+        let currentSentence;
+
+        function startTest() {
+            currentSentence = sentences[Math.floor(Math.random() * sentences.length)];
+            document.getElementById('quote').innerText = currentSentence;
+            const inputBox = document.getElementById('inputBox');
+            inputBox.value = '';
+            inputBox.disabled = false;
+            inputBox.focus();
+            startTime = new Date();
+            inputBox.oninput = checkInput;
+            document.getElementById('result').innerText = '';
+        }
+
+        function checkInput() {
+            const inputBox = document.getElementById('inputBox');
+            if (inputBox.value === currentSentence) {
+                const endTime = new Date();
+                const timeTaken = (endTime - startTime) / 1000;
+                const wpm = Math.round((currentSentence.length / 5) / (timeTaken / 60));
+                document.getElementById('result').innerText = `완료! 시간: ${timeTaken.toFixed(2)}초, 속도: ${wpm} WPM`;
+                inputBox.disabled = true;
+            }
+        }
+    </script>
+</body>
+</html>
